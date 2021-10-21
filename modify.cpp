@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class sudokobase{
+class Sudokobase{
     private:
         int N;
         int grid[9][9];
@@ -10,11 +10,21 @@ class sudokobase{
 
 };
 
-class solver : sudokobase{
+class Solver : Sudokobase{
 
 };
 
-class game : sudokobase{
+class Game : Sudokobase{
+    char levels;
 
 };
 
+class Grid {
+    int grid[9][9];
+
+};
+
+class User{
+    string name;
+    
+};

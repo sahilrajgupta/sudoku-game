@@ -42,7 +42,7 @@ class sudoku
        
     public:
     sudoku(int Num){
-    N = Num*Num;
+        N = Num*Num;
     }
 
 
@@ -60,9 +60,10 @@ class sudoku
     }
     
     bool solveSudoku(){
-       int row, col;
+       int row,col;
        if (!findEmptyPlace(row, col))
           return true; //when all places are filled
+        cout<<row<<" "<<col<<endl;
        for (int num = 1; num <= 9; num++){ //valid numbers are 1 - 9
           if (isValidPlace(row, col, num)){ //check validation, if yes, put the number in the grid
              grid[row][col] = num;
@@ -125,7 +126,7 @@ int main(){
     sudoku s1(3);
     
     //s1.getGrid();
-    s1.printGrid();
+    //s1.printGrid();
     cout<<endl;
    if (s1.solveSudoku() == true)
       s1.printGrid();
