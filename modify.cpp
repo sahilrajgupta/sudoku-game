@@ -7,5 +7,14 @@ class sudokobase{
         int grid[9][9];
         void printGrid(){}
         void getGridElements(){}
-        
+
 };
+
+class solver : sudokobase{
+
+};
+
+class game : sudokobase{
+
+};
+
