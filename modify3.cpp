@@ -1,8 +1,10 @@
 #include<iostream>
 #include<bits/stdc++.h>
 
+int grid[9][9]; 
+
 using namespace std;
-void printGrid(vector<vector<int>>b)
+void printGrid(int b[][9])
 {
 for (int row = 0; row < 9; row++){
     for (int col = 0; col < 9; col++){
@@ -22,15 +24,16 @@ for (int row = 0; row < 9; row++){
 class Grid{
     public:
     int lvl=0;
-    vector<vector<int>> grid;
-       
+
+    //vector<vector<int>> grid;
+    
     void Griding(vector<int> k)
        {
           for(int i=0;i<9;i++)
           {
               for(int j=0;j<9;j++)
               {
-                grid[i].push_back(k[9*i+j]);
+                grid[i][j] = (k[9*i+j]);
               }
           }
         }
@@ -40,15 +43,19 @@ class Grid{
 
         if(lvl==1)
         {
-        int g[100]={
-        3,0,6,5,0,8,4,0,0,5,2,0,0,0,0,0,0,0,0,8,7,0,0,0,0,3,1,0,0,3,0,1,0,0,8,0,9,0,0,8,6,3,0,0,5,0,5,0,0,9,0,6,0,0,1,3,0,0,0,0,2,5,0,0,0,0,0,0,0,0,7,4,0,0,5,2,0,6,3,0,0};
-        for(int i=0;i<9;i++)
-        {
-            for(int j=0;j<9;j++)
-            {
-                grid[i].push_back(g[9*i+j]);
+            //cout<<"In level 1"<<endl;
+            int g[100]={
+            3,0,6,5,0,8,4,0,0,5,2,0,0,0,0,0,0,0,0,8,7,0,0,0,0,3,1,0,0,3,0,1,0,0,8,0,9,0,0,8,6,3,0,0,5,0,5,0,0,9,0,6,0,0,1,3,0,0,0,0,2,5,0,0,0,0,0,0,0,0,7,4,0,0,5,2,0,6,3,0,0};
+            //cout<<"In level 1"<<endl;
+            for(int i=0;i<9;i++)
+            {   //cout<<"In level 1 "<<i<<endl;
+                for(int j=0;j<9;j++)
+                {   //cout<<"In level 1 "<<i<<endl;
+                    //grid[i].push_back(g[9*i+j]);
+                    grid[i][j] = g[9*i+j];
+                    //cout<<"In level 1 "<<i<<endl;
+                }
             }
-        }
         }
         else if(lvl==2)
         {
@@ -58,8 +65,9 @@ class Grid{
         {
             for(int j=0;j<9;j++)
             {
-                grid[i].push_back(g[9*i+j]);
-         }
+                //grid[i].push_back(g[9*i+j]);
+                grid[i][j]=g[9*i+j];
+            }
         }
         }
         else if(lvl==3)
@@ -70,7 +78,8 @@ class Grid{
         {
             for(int j=0;j<9;j++)
             {
-                grid[i].push_back(g[9*i+j]);
+               // grid[i].push_back(g[9*i+j]);
+               grid[i][j]=g[9*i+j];
             }
         }
         }
@@ -146,19 +155,19 @@ class Checker : public Grid{
 
 //friend functions - isValid and findEmptyPlace
 
-class Solver : public Grid, public Checker{
+class Solver : public Checker,public Grid{
     public:
     bool solveSudoku(){
        int row,col;
        if (!findEmptyPlace(row, col))
           return true; //when all places are filled
-        cout<<row<<" "<<col<<endl;
+        //cout<<row<<" "<<col<<endl;
        for (int num = 1; num <= 9; num++){ //valid numbers are 1 - 9
           if (isValidPlace(row, col, num)){ //check validation, if yes, put the number in the grid
-             Checker::grid[row][col] = num;
+             grid[row][col] = num;
              if (solveSudoku()) //recursively go for other rooms in the grid
                 return true;
-             Checker::grid[row][col] = 0; //turn to unassigned space when conditions are not satisfied
+             grid[row][col] = 0; //turn to unassigned space when conditions are not satisfied
           }
        }
        return false;
@@ -232,7 +241,12 @@ int main(){
             int a;
             cin>>a;
             h.Gridgenerate(a);
-            printGrid(h.grid);
+            cout<<"sample"<<endl;
+            printGrid(grid);
+            Solver sol;
+            sol.solveSudoku();
+            cout<<"Solved"<<endl;
+            printGrid(grid);
         }
         
     }
