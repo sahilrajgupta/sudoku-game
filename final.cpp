@@ -7,7 +7,7 @@ using namespace std;
 class Grid{
     public:
     int lvl=0;
-    int grid[9][9]; 
+    static int grid[9][9]; 
 
     //vector<vector<int>> grid;
     
@@ -75,6 +75,8 @@ class Grid{
        
     }
 };
+
+int Grid::grid[9][9];
 
 
 class Sudokobase : public Grid{
@@ -203,7 +205,8 @@ int main(){
     
     string n;
     int i;
-    Solver h;
+    Grid g;
+    //Solver h;
     vector<int> res;
     cout<< "Welcome To Sudoko Mania"<<endl;
     cout<<"Please Enter Your Name: ";
@@ -237,15 +240,16 @@ int main(){
                 cin>>num;
                 res.push_back(num);
             }
-            h.Griding(res);
+            g.Griding(res);
         }
         else{
             cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
             int a;
             cin>>a;
-            h.Gridgenerate(a);
+            g.Gridgenerate(a);
             cout<<"sample"<<endl;
-            printGrid(h.grid);
+            printGrid(g.grid);
+            Solver h;
             h.solveSudoku();
             cout<<"Solved"<<endl;
             printGrid(h.grid);

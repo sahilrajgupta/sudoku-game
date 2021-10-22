@@ -3,27 +3,11 @@
 
 
 using namespace std;
-void printGrid(int b[][9])
-{
-for (int row = 0; row < 9; row++){
-    for (int col = 0; col < 9; col++){
-        if(col == 3 || col == 6)
-            cout << " | ";
-        cout << b[row][col]<<" ";
-    }
-    if(row == 2 || row == 5){
-             cout << endl;
-          for(int i = 0; i<9; i++)
-                cout << "---";
-          }
-          cout << endl;
-       }
-}
 
 class Grid{
     public:
     int lvl=0;
-    int grid[9][9]; 
+    static int grid[9][9]; 
 
     //vector<vector<int>> grid;
     
@@ -92,27 +76,47 @@ class Grid{
     }
 };
 
+int Grid::grid[9][9];
+
 
 class Sudokobase : public Grid{
     public:
         int N;
-        void printGrid(){
-            for (int row = 0; row < N; row++){
-                for (int col = 0; col < N; col++){
-                    if(col == 3 || col == 6)
-                        cout << " | ";
-                    cout << grid[row][col] <<" ";
-          }
-          if(row == 2 || row == 5){
+        friend void printGrid(int b[][9]);//{
+    //         for (int row = 0; row < N; row++){
+    //             for (int col = 0; col < N; col++){
+    //                 if(col == 3 || col == 6)
+    //                     cout << " | ";
+    //                 cout << grid[row][col] <<" ";
+    //       }
+    //       if(row == 2 || row == 5){
+    //          cout << endl;
+    //          for(int i = 0; i<N; i++)
+    //             cout << "---";
+    //       }
+    //       cout << endl;
+    //    }
+   // }
+        //void getGridElements(){}
+};
+
+void printGrid(int b[][9])
+{
+for (int row = 0; row < 9; row++){
+    for (int col = 0; col < 9; col++){
+        if(col == 3 || col == 6)
+            cout << " | ";
+        cout << b[row][col]<<" ";
+    }
+    if(row == 2 || row == 5){
              cout << endl;
-             for(int i = 0; i<N; i++)
+          for(int i = 0; i<9; i++)
                 cout << "---";
           }
           cout << endl;
        }
-    }
-        //void getGridElements(){}
-};
+}
+
 
 class Checker : public Grid{
 
@@ -150,6 +154,7 @@ class Checker : public Grid{
        return !isPresentInRow(row, num) && !isPresentInCol(col, num) && !isPresentInBox(row - row%3 ,
     col - col%3, num);
     }
+
 };
  
 
@@ -200,7 +205,8 @@ int main(){
     
     string n;
     int i;
-    Solver h;
+    Grid g;
+    //Solver h;
     vector<int> res;
     cout<< "Welcome To Sudoko Mania"<<endl;
     cout<<"Please Enter Your Name: ";
@@ -234,15 +240,16 @@ int main(){
                 cin>>num;
                 res.push_back(num);
             }
-            h.Griding(res);
+            g.Griding(res);
         }
         else{
             cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
             int a;
             cin>>a;
-            h.Gridgenerate(a);
+            g.Gridgenerate(a);
             cout<<"sample"<<endl;
-            printGrid(h.grid);
+            printGrid(g.grid);
+            Solver h;
             h.solveSudoku();
             cout<<"Solved"<<endl;
             printGrid(h.grid);
