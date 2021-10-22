@@ -7,10 +7,28 @@ using namespace std;
 class Grid{
     public:
     int lvl=0;
+    int N = 9;
     static int grid[9][9]; 
 
     //vector<vector<int>> grid;
-    
+
+    //virtual void takeInput();
+
+    void printGrid(){
+            for (int row = 0; row < N; row++){
+                for (int col = 0; col < N; col++){
+                    if(col == 3 || col == 6)
+                        cout << " | ";
+                    cout << grid[row][col] <<" ";
+          }
+          if(row == 2 || row == 5){
+             cout << endl;
+             for(int i = 0; i<N; i++)
+                cout << "---";
+          }
+          cout << endl;
+       }
+    }
     void Griding(vector<int> k)
        {
           for(int i=0;i<9;i++)
@@ -82,45 +100,45 @@ int Grid::grid[9][9];
 class Sudokobase : public Grid{
     public:
         int N;
-        friend void printGrid(int b[][9]);//{
-    //         for (int row = 0; row < N; row++){
-    //             for (int col = 0; col < N; col++){
-    //                 if(col == 3 || col == 6)
-    //                     cout << " | ";
-    //                 cout << grid[row][col] <<" ";
-    //       }
-    //       if(row == 2 || row == 5){
-    //          cout << endl;
-    //          for(int i = 0; i<N; i++)
-    //             cout << "---";
-    //       }
-    //       cout << endl;
-    //    }
-   // }
-        //void getGridElements(){}
-};
-
-void printGrid(int b[][9])
-{
-for (int row = 0; row < 9; row++){
-    for (int col = 0; col < 9; col++){
-        if(col == 3 || col == 6)
-            cout << " | ";
-        cout << b[row][col]<<" ";
-    }
-    if(row == 2 || row == 5){
+        void printGrid(int b[][9]){
+            for (int row = 0; row < N; row++){
+                for (int col = 0; col < N; col++){
+                    if(col == 3 || col == 6)
+                        cout << " | ";
+                    cout << grid[row][col] <<" ";
+          }
+          if(row == 2 || row == 5){
              cout << endl;
-          for(int i = 0; i<9; i++)
+             for(int i = 0; i<N; i++)
                 cout << "---";
           }
           cout << endl;
        }
-}
+   }
+       //void getGridElements(){}
+};
+
+// void printGrid(int b[][9])
+// {
+// for (int row = 0; row < 9; row++){
+//     for (int col = 0; col < 9; col++){
+//         if(col == 3 || col == 6)
+//             cout << " | ";
+//         cout << b[row][col]<<" ";
+//     }
+//     if(row == 2 || row == 5){
+//              cout << endl;
+//           for(int i = 0; i<9; i++)
+//                 cout << "---";
+//           }
+//           cout << endl;
+//        }
+// }
 
 
 class Checker : public Grid{
 
-    public:
+    private:
        bool isPresentInCol(int col, int num){ //check whether num is present in col or not
        for (int row = 0; row < 9; row++)
           if (grid[row][col] == num)
@@ -141,8 +159,41 @@ class Checker : public Grid{
                 return true;
        return false;
     }
-
-   bool findEmptyPlace(int &row, int &col){ //get empty location and update row and column
+    public:
+    bool findEmptyPlace(int vi[9][9])
+       {
+           for(int i=0;i<9;i++)
+           {
+               for(int j=0;j<9;j++)
+               {
+                   if(vi[i][j]==0)
+                     return true;
+               }
+           }
+           return false;
+       }
+       bool isValidPlace(int vi[9][9])
+       {
+          unordered_map<int,int> validation;
+          for(int i=1;i<10;i++)
+          {
+                validation[i]=9;
+          } 
+          for(int i=0;i<9;i++)
+          {
+              for(int j=0;j<9;j++)
+              {
+                  validation[vi[i][j]]--;
+              }
+          }
+          for(int i=1;i<=9;i++)
+          {
+              if(validation[i]!=0)
+                return false;
+          }
+        return true;   
+       }
+    bool findEmptyPlace(int &row, int &col){ //get empty location and update row and column
        for (row = 0; row < 9; row++)
           for (col = 0; col < 9; col++)
              if (grid[row][col] == 0) //marked with 0 is empty
@@ -157,11 +208,33 @@ class Checker : public Grid{
 
 };
  
+ char checks(Checker E,int des[9][9])
+       {
+           bool flag_1= E.findEmptyPlace(des);
+           bool flag_2= E.isValidPlace(des);
+
+           if(flag_1==false && flag_2==true)
+           {
+               return 'T';
+           }
+           else if(flag_1==true && flag_2==false)
+           {
+              cout<<"You still have Empty Spaces";
+              return 'F';       
+           }
+           else if(flag_1==false && flag_2==false)
+           {
+              cout<<"Some values may be Repeated or Misplaced";
+              return 'F';
+           }
+    return 'F';
+}
 
 //friend functions - isValid and findEmptyPlace
 
 class Solver : public Checker{
     public:
+
     bool solveSudoku(){
        int row,col;
        if (!findEmptyPlace(row, col))
@@ -201,6 +274,57 @@ class User{
     
 };
 
+class Game : public Checker{
+    private:
+    int c = 0;
+    int count(){
+        for(int i = 0;i<9;i++){
+            for(int j =0;j<9;j++){
+                c++;
+            }
+        }
+        return c;
+    }
+
+    public:
+    void solve(){
+        int a = count();
+        int k[3];
+        
+        while(a!=0){
+            cout<<"Enter ROW COL VALUE in sequence"<<endl;
+            for(int i =0;i<3;i++){
+                cin>>k[i];
+            }   
+            if(grid[k[0]][k[1]]==0){
+                if(isValidPlace(k[0],k[1],k[2])){
+                    grid[k[0]][k[1]]= k[2];
+                    a--;
+                    cout<<"Success"<<endl;
+                    cout<<endl;
+                    printGrid();
+                }
+                else{
+                    cout<<endl;
+                    cout<<"InValid! Value not allowed"<<endl;
+                    cout<<endl;
+                    printGrid();
+                }
+            }
+            else{
+                cout<<endl;
+                cout<<"Invalid! Node already present!"<<endl;
+                cout<<endl;
+                printGrid();
+            }   
+        }
+        
+    }
+
+   
+
+};
+
 int main(){
     
     string n;
@@ -221,7 +345,7 @@ int main(){
       User U(n,i);  
     }
 
-    cout<<endl<<"Please Enter any of the following Option : \n 1. Solver \n 2. Checker \n 3. Exit"<<endl;
+    cout<<endl<<"Please Enter any of the following Option : \n 1. Solver \n 2. Checker \n 3. Game \n 4. Exit \n"<<endl;
     
     int opt=0;
     cin>>opt;
@@ -248,13 +372,50 @@ int main(){
             cin>>a;
             g.Gridgenerate(a);
             cout<<"sample"<<endl;
-            printGrid(g.grid);
+            g.printGrid();
             Solver h;
             h.solveSudoku();
             cout<<"Solved"<<endl;
-            printGrid(h.grid);
+            g.printGrid();
         }
         
     }
-       return 0;
+    if(opt==2)
+    {
+        cout<<"Please Enter your Sudoko: ";
+        int Res[9][9];
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<9;j++)
+            {   
+                cin>>Res[i][j];
+            }
+        }
+        Checker C;
+        int status = checks(C,Res);
+        if(status=='T')
+          cout<<endl<<"Correct!!!";
+        else
+          cout<<endl<<"Incorrect! Please solve Again";  
+    }
+
+    if(opt==3){
+        cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
+        int a;
+        cin>>a;
+        g.Gridgenerate(a);
+        cout<<"Unsolved Sudoku"<<endl;
+        g.printGrid();
+        Game game;
+        game.solve();
+
+    }
+
+    if(opt==4)
+    {
+        cout<<"Thankyou!See You Again";
+        return 0;
+    }
+
+    return 0;
 }
