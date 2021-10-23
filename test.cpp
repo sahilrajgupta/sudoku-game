@@ -1,6 +1,6 @@
 #include<iostream>
 #include<bits/stdc++.h>
-
+#include<conio.h>
 
 using namespace std;
 
@@ -29,7 +29,7 @@ class Grid{
           cout << endl;
        }
     }
-    void Griding(vector<int> k)
+    virtual void Griding(vector<int> k)
        {
           for(int i=0;i<9;i++)
           {
@@ -96,46 +96,6 @@ class Grid{
 
 int Grid::grid[9][9];
 
-
-class Sudokobase : public Grid{
-    public:
-        int N;
-        void printGrid(int b[][9]){
-            for (int row = 0; row < N; row++){
-                for (int col = 0; col < N; col++){
-                    if(col == 3 || col == 6)
-                        cout << " | ";
-                    cout << grid[row][col] <<" ";
-          }
-          if(row == 2 || row == 5){
-             cout << endl;
-             for(int i = 0; i<N; i++)
-                cout << "---";
-          }
-          cout << endl;
-       }
-   }
-       //void getGridElements(){}
-};
-
-// void printGrid(int b[][9])
-// {
-// for (int row = 0; row < 9; row++){
-//     for (int col = 0; col < 9; col++){
-//         if(col == 3 || col == 6)
-//             cout << " | ";
-//         cout << b[row][col]<<" ";
-//     }
-//     if(row == 2 || row == 5){
-//              cout << endl;
-//           for(int i = 0; i<9; i++)
-//                 cout << "---";
-//           }
-//           cout << endl;
-//        }
-// }
-
-
 class Checker : public Grid{
 
     private:
@@ -160,19 +120,24 @@ class Checker : public Grid{
        return false;
     }
     public:
-    bool findEmptyPlace(int vi[9][9])
+
+    void Gridding(int val, int i, int j){
+        grid[i][j] = val;
+    }
+
+    bool findEmptyPlace()
        {
            for(int i=0;i<9;i++)
            {
                for(int j=0;j<9;j++)
                {
-                   if(vi[i][j]==0)
+                   if(grid[i][j]==0)
                      return true;
                }
            }
            return false;
        }
-       bool isValidPlace(int vi[9][9])
+       bool isValidPlace()
        {
           unordered_map<int,int> validation;
           for(int i=1;i<10;i++)
@@ -183,7 +148,7 @@ class Checker : public Grid{
           {
               for(int j=0;j<9;j++)
               {
-                  validation[vi[i][j]]--;
+                  validation[grid[i][j]]--;
               }
           }
           for(int i=1;i<=9;i++)
@@ -208,10 +173,10 @@ class Checker : public Grid{
 
 };
  
- char checks(Checker E,int des[9][9])
+ char checks(Checker E)
        {
-           bool flag_1= E.findEmptyPlace(des);
-           bool flag_2= E.isValidPlace(des);
+           bool flag_1= E.findEmptyPlace();
+           bool flag_2= E.isValidPlace();
 
            if(flag_1==false && flag_2==true)
            {
@@ -320,16 +285,13 @@ class Game : public Checker{
         }
         
     }
-
-   
-
 };
 
 int main(){
     
     string n;
     int i;
-    Grid g;
+    Grid* g = new Grid();
     //Solver h;
     vector<int> res;
     cout<< "Welcome To Sudoko Mania"<<endl;
@@ -357,42 +319,70 @@ int main(){
         cin>>stat;
         
         if(stat=='y')
-        {
-            cout<<"Please enter your grid:";
-            for(int i=0;i<81;i++)
-            { int num;
-                cin>>num;
-                res.push_back(num);
+        {   
+            cout<<"Enter in Matrix form(y/n)\n";
+            char d;
+            cin>>d;
+            if(d=='y'){
+                int val;
+                for(i=0;i<9;++i){
+                    for(int j=0;j<9;j++){
+                        cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
+                        Checker c;
+                        c.printGrid();//function to print the 9*9 matrix h.grid
+                        cin>>val;
+                        
+                        c.Gridding(val,i,j);
+                        // function to updathe 9*9 array h.grid with the value val at position pos
+                        //clrscr();
+                        system("cls");
+                    }
+                }
             }
-            g.Griding(res);
+            else{
+                cout<<"Please enter your grid:";
+                for(int i=0;i<81;i++)
+                {   int num;
+                    cin>>num;
+                    res.push_back(num);
+                }
+                g->Griding(res);
+            }
+            
         }
         else{
             cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
             int a;
             cin>>a;
-            g.Gridgenerate(a);
+            g->Gridgenerate(a);
             cout<<"sample"<<endl;
-            g.printGrid();
+            g->printGrid();
             Solver h;
             h.solveSudoku();
             cout<<"Solved"<<endl;
-            g.printGrid();
+            g->printGrid();
         }
         
     }
     if(opt==2)
     {
-        cout<<"Please Enter your Sudoko: ";
-        int Res[9][9];
-        for(int i=0;i<9;i++)
-        {
-            for(int j=0;j<9;j++)
-            {   
-                cin>>Res[i][j];
+        cout<<"Please Enter your Sudoko: \n";
+        int val;
+        for(i=0;i<9;++i){
+            for(int j=0;j<9;j++){
+            cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
+            Checker c;
+            c.printGrid();//function to print the 9*9 matrix h.grid
+            cin>>val;
+            
+            c.Gridding(val,i,j);
+            // function to updathe 9*9 array h.grid with the value val at position pos
+            //clrscr();
+            system("cls");
             }
         }
         Checker C;
-        int status = checks(C,Res);
+        int status = checks(C);
         if(status=='T')
           cout<<endl<<"Correct!!!";
         else
@@ -403,9 +393,9 @@ int main(){
         cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
         int a;
         cin>>a;
-        g.Gridgenerate(a);
+        g->Gridgenerate(a);
         cout<<"Unsolved Sudoku"<<endl;
-        g.printGrid();
+        g->printGrid();
         Game game;
         game.solve();
 
@@ -415,7 +405,10 @@ int main(){
     {
         cout<<"Thankyou!See You Again";
         return 0;
-    }
+    }  
 
+    delete g;
     return 0;
 }
+// 4 3 5 2 6 9 7 8 1 6 8 2 5 7 1 4 9 3 1 9 7 8 3 4 5 6 2 8 2 6 1 9 5 3 4 7 3 7 4 6 8 2 9 1 5 9 5 1 7 4 3 6 2 8 5 1 9 3 2 6 8 7 4 2 4 8 9 5 7 1 3 6 7 6 3 4 1 8 2 5 9
+// 
