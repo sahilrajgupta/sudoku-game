@@ -1,7 +1,7 @@
 #include<iostream>
 #include<bits/stdc++.h>
 #include<conio.h>
-
+#include"user.cpp"
 using namespace std;
 
 class Grid{
