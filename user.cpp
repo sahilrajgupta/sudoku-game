@@ -13,7 +13,6 @@ bool login()
     {
        int count;
        string user,pass,u,p;
-       system("cls");
        cout<<"please enter the following details"<<endl;
        cout<<"USERNAME :";
        cin>>user;
@@ -27,21 +26,23 @@ bool login()
       
                {
                        count=1;
-                       system("cls");
+                       
                }
        }
        input.close();
-       if(count==1)
-       {        
-               cout<<"\nHello "<<user<<"\nLOGIN SUCESSs\nWe're glad that you're here.\nThanks for logging in";
-               cin.get();
+       
+               if(count==1)
+        {        
+               cout<<"\nHello "<<user;
+               
                return true;
-       }
+        }
        else
        {
-               cout<<"\nLOGIN ERROR\nPlease check your username and password\n";
+              
                return false;
        }
+       
         return false;
     }
  

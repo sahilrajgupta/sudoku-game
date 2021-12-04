@@ -397,129 +397,146 @@ int main(){
        cout<<endl;
        switch(choice)
        {
-               case 1:  {
-                    bool status = l.login();
 
+            
+
+               case 1:  {
+                   system("cls");
+                   try{
+                       bool status = l.login();
+                       if(status == true){
+                            cout<<"\nLOGIN SUCESSs\nWe're glad that you're here.\nThanks for logging in";
+                        
+                       }
+                       else{
+                           throw status;
+                       }
+                   }
+                   catch(bool myStatus){
+                       cout<<"\nLOGIN ERROR\nPlease check your username and password\n"<<myStatus;
+                   }
+
+                    bool status = l.login();
                         if(status == true){
 
                          while(1){
-        cout<<endl<<"Please Enter any of the following Option : \n 1. Solver \n 2. Checker \n 3. Game \n 4. Exit \n"<<endl;
-    int opt=0;
-    cin>>opt;
+                        cout<<endl<<"Please Enter any of the following Option : \n 1. Solver \n 2. Checker \n 3. Game \n 4. Exit \n"<<endl;
+                    int opt=0;
+                    cin>>opt;
 
-    if(opt==1)
-    {   Solver* g = new Solver();
-        cout<<"Do you want to use your own grid?(y/n)"<<endl;
-        char stat;
-        cin>>stat;
-        
-        if(stat=='y')
-        {   
-            cout<<"Enter in Matrix form(y/n)\n";
-            char d;
-            cin>>d;
-            Checker* c = new Checker();
-            if(d=='y'){
-                int val;
-                for(i=0;i<9;++i){
-                    for(int j=0;j<9;j++){
-                        cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
+                    if(opt==1)
+                    {   Solver* g = new Solver();
+                        cout<<"Do you want to use your own grid?(y/n)"<<endl;
+                        char stat;
+                        cin>>stat;
                         
-                        g->printGrid();//function to print the 9*9 matrix h.grid
-                        cin>>val;
+                        if(stat=='y')
+                        {   
+                            cout<<"Enter in Matrix form(y/n)\n";
+                            char d;
+                            cin>>d;
+                            Checker* c = new Checker();
+                            if(d=='y'){
+                                int val;
+                                for(i=0;i<9;++i){
+                                    for(int j=0;j<9;j++){
+                                        cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
+                                        
+                                        g->printGrid();//function to print the 9*9 matrix h.grid
+                                        cin>>val;
+                                        
+                                        g->Griding(val,i,j);
+                                        // function to updathe 9*9 array h.grid with the value val at position pos
+                                        //clrscr();
+                                        system("cls");
+                                    }
+                                }
+                                
+
+                            }
+                            else{
+                                cout<<"Please enter your grid:";
+                                for(int i=0;i<81;i++)
+                                {   int num;
+                                    cin>>num;
+                                    res.push_back(num);
+                                }
+                                g->Griding(res);
+                            }
+                            cout<<"Your Entered Matrix:\n";
+                            g->printGrid();
+                            g->solveSudoku();
+                            cout<<"Solved"<<endl;
+                            g->printGrid();
+                            delete c;
+                            
+                        }
+                        else{
+                            cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
+                            int a;
+                            cin>>a;
+                            g->Griding(a);
+                            cout<<"sample"<<endl;
+                            g->printGrid();
+                            Solver* h = new Solver();
+                            h->solveSudoku();
+                            cout<<"Solved"<<endl;
+                            g->printGrid();
+                            delete h;
+                        }
+                        delete g;
                         
-                        g->Griding(val,i,j);
-                        // function to updathe 9*9 array h.grid with the value val at position pos
-                        //clrscr();
-                        system("cls");
                     }
-                }
-                
+                    if(opt==2)
+                    {   
+                    
+                        Checker* c= new Checker();
+                        cout<<"Please Enter your Sudoko: \n";
+                        int val;
+                        for(i=0;i<9;++i){
+                            for(int j=0;j<9;j++){
+                            cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
+                            //Checker* c= new Checker();
+                            c->printGrid();//function to print the 9*9 matrix h.grid
+                            cin>>val;
+                            
+                            c->Griding(val,i,j);
+                            // function to updathe 9*9 array h.grid with the value val at position pos
+                            //clrscr();
+                            system("cls");
+                            }
+                        }
+                        
+                        int status = checks(c);
+                        if(status=='T')
+                        cout<<endl<<"Correct!!!";
+                        else
+                        cout<<endl<<"Incorrect! Please solve Again";  
+                        
+                        //delete C;
+                        delete c;
+                    }
 
-            }
-            else{
-                cout<<"Please enter your grid:";
-                for(int i=0;i<81;i++)
-                {   int num;
-                    cin>>num;
-                    res.push_back(num);
-                }
-                g->Griding(res);
-            }
-            cout<<"Your Entered Matrix:\n";
-            g->printGrid();
-            g->solveSudoku();
-            cout<<"Solved"<<endl;
-            g->printGrid();
-            delete c;
-            
-        }
-        else{
-            cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
-            int a;
-            cin>>a;
-            g->Griding(a);
-            cout<<"sample"<<endl;
-            g->printGrid();
-            Solver* h = new Solver();
-            h->solveSudoku();
-            cout<<"Solved"<<endl;
-            g->printGrid();
-            delete h;
-        }
-        delete g;
-        
-    }
-    if(opt==2)
-    {   
-       
-        Checker* c= new Checker();
-        cout<<"Please Enter your Sudoko: \n";
-        int val;
-        for(i=0;i<9;++i){
-            for(int j=0;j<9;j++){
-            cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
-            //Checker* c= new Checker();
-            c->printGrid();//function to print the 9*9 matrix h.grid
-            cin>>val;
-            
-            c->Griding(val,i,j);
-            // function to updathe 9*9 array h.grid with the value val at position pos
-            //clrscr();
-            system("cls");
-            }
-        }
-        
-        int status = checks(c);
-        if(status=='T')
-          cout<<endl<<"Correct!!!";
-        else
-          cout<<endl<<"Incorrect! Please solve Again";  
-         
-          //delete C;
-          delete c;
-    }
+                    if(opt==3){
+                        Game* g = new Game();
+                        cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
+                        int a;
+                        cin>>a;
+                        g->Griding(a);
+                        cout<<"Unsolved Sudoku"<<endl;
+                        g->printGrid();
+                        Game *game = new Game();
+                        game->solve();
+                        delete g;
+                        delete game;
+                    }
 
-    if(opt==3){
-        Game* g = new Game();
-        cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
-        int a;
-        cin>>a;
-        g->Griding(a);
-        cout<<"Unsolved Sudoku"<<endl;
-        g->printGrid();
-        Game *game = new Game();
-        game->solve();
-        delete g;
-        delete game;
-    }
-
-    if(opt==4)
-    {
-        cout<<"Thankyou!See You Again";
-        return 0;
-    }
-               }
+                    if(opt==4)
+                    {
+                        cout<<"Thankyou!See You Again";
+                        return 0;
+                    }
+                            }
                         }
                        break;
                }
