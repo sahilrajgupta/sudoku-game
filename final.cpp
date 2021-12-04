@@ -10,6 +10,13 @@ class Grid{
     int N = 9;
     static int grid[9][9]; 
 
+    Grid(){
+        for(int i =0;i<9;i++){
+            for(int j =0;j<9;j++){
+                grid[i][j] = 0;
+            }
+        }
+    }
     //vector<vector<int>> grid;
 
     //virtual void takeInput();
@@ -29,76 +36,15 @@ class Grid{
           cout << endl;
        }
     }
-    virtual void Griding(vector<int> k)
-       {
-          for(int i=0;i<9;i++)
-          {
-              for(int j=0;j<9;j++)
-              {
-                grid[i][j] = (k[9*i+j]);
-              }
-          }
-        }
-    void Gridgenerate(int a)
-    {
-        lvl= a;
-
-        if(lvl==1)
-        {
-            //cout<<"In level 1"<<endl;
-            int g[100]={
-            3,0,6,5,0,8,4,0,0,5,2,0,0,0,0,0,0,0,0,8,7,0,0,0,0,3,1,0,0,3,0,1,0,0,8,0,9,0,0,8,6,3,0,0,5,0,5,0,0,9,0,6,0,0,1,3,0,0,0,0,2,5,0,0,0,0,0,0,0,0,7,4,0,0,5,2,0,6,3,0,0};
-            //cout<<"In level 1"<<endl;
-            for(int i=0;i<9;i++)
-            {   //cout<<"In level 1 "<<i<<endl;
-                for(int j=0;j<9;j++)
-                {   //cout<<"In level 1 "<<i<<endl;
-                    //grid[i].push_back(g[9*i+j]);
-                    grid[i][j] = g[9*i+j];
-                    //cout<<"In level 1 "<<i<<endl;
-                }
-            }
-        }
-        else if(lvl==2)
-        {
-        int g[100]={
-        0,1,0,0,2,0,3,0,0,0,0,2,0,0,3,0,4,0,0,8,0,0,0,0,0,0,6,0,0,4,7,0,0,0,3,0,0,0,0,6,0,0,0,0,8,0,7,0,0,9,8,0,0,0,3,0,0,0,0,4,0,9,0,0,0,0,8,0,0,1,0,4,0,0,6,0,0,0,0,0,0};  
-        for(int i=0;i<9;i++)
-        {
-            for(int j=0;j<9;j++)
-            {
-                //grid[i].push_back(g[9*i+j]);
-                grid[i][j]=g[9*i+j];
-            }
-        }
-        }
-        else if(lvl==3)
-        {
-            int g[100]={
-        0,1,0,0,2,0,3,0,0,0,0,2,0,0,3,0,4,0,0,5,0,0,0,0,0,0,6,0,0,4,2,0,0,0,5,0,0,0,0,1,0,0,0,0,7,0,2,0,0,8,7,0,0,0,3,0,0,0,0,4,0,8,0,0,0,0,6,0,0,1,0,5,0,0,6,0,0,0,0,0,0};
-        for(int i=0;i<9;i++)
-        {
-            for(int j=0;j<9;j++)
-            {
-               // grid[i].push_back(g[9*i+j]);
-               grid[i][j]=g[9*i+j];
-            }
-        }
-        }
-
-        else{
-            cout<<"Please Enter a Valid Level";
-        }
-
-       
-    }
+    virtual void Griding(vector<int> k)=0;
+      
 };
 
 int Grid::grid[9][9];
 
 class Checker : public Grid{
 
-    private:
+    protected:
        bool isPresentInCol(int col, int num){ //check whether num is present in col or not
        for (int row = 0; row < 9; row++)
           if (grid[row][col] == num)
@@ -121,10 +67,12 @@ class Checker : public Grid{
     }
     public:
 
-    void Gridding(int val, int i, int j){
+   void Griding(int val, int i, int j){
         grid[i][j] = val;
     }
-
+    void Griding(vector<int> k){
+        cout<<"hello";
+    }
     bool findEmptyPlace()
        {
            for(int i=0;i<9;i++)
@@ -199,7 +147,71 @@ class Checker : public Grid{
 
 class Solver : public Checker{
     public:
+    void Griding(int val, int i, int j){
+        grid[i][j] = val;
+    }
+     void Griding(int a)
+    {
+        lvl= a;
 
+        if(lvl==1)
+        {
+            //cout<<"In level 1"<<endl;
+            int g[100]={
+            3,0,6,5,0,8,4,0,0,5,2,0,0,0,0,0,0,0,0,8,7,0,0,0,0,3,1,0,0,3,0,1,0,0,8,0,9,0,0,8,6,3,0,0,5,0,5,0,0,9,0,6,0,0,1,3,0,0,0,0,2,5,0,0,0,0,0,0,0,0,7,4,0,0,5,2,0,6,3,0,0};
+            //cout<<"In level 1"<<endl;
+            for(int i=0;i<9;i++)
+            {   //cout<<"In level 1 "<<i<<endl;
+                for(int j=0;j<9;j++)
+                {   //cout<<"In level 1 "<<i<<endl;
+                    //grid[i].push_back(g[9*i+j]);
+                    grid[i][j] = g[9*i+j];
+                    //cout<<"In level 1 "<<i<<endl;
+                }
+            }
+        }
+        else if(lvl==2)
+        {
+        int g[100]={
+        0,1,0,0,2,0,3,0,0,0,0,2,0,0,3,0,4,0,0,8,0,0,0,0,0,0,6,0,0,4,7,0,0,0,3,0,0,0,0,6,0,0,0,0,8,0,7,0,0,9,8,0,0,0,3,0,0,0,0,4,0,9,0,0,0,0,8,0,0,1,0,4,0,0,6,0,0,0,0,0,0};  
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<9;j++)
+            {
+                //grid[i].push_back(g[9*i+j]);
+                grid[i][j]=g[9*i+j];
+            }
+        }
+        }
+        else if(lvl==3)
+        {
+            int g[100]={
+        0,1,0,0,2,0,3,0,0,0,0,2,0,0,3,0,4,0,0,5,0,0,0,0,0,0,6,0,0,4,2,0,0,0,5,0,0,0,0,1,0,0,0,0,7,0,2,0,0,8,7,0,0,0,3,0,0,0,0,4,0,8,0,0,0,0,6,0,0,1,0,5,0,0,6,0,0,0,0,0,0};
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<9;j++)
+            {
+               // grid[i].push_back(g[9*i+j]);
+               grid[i][j]=g[9*i+j];
+            }
+        }
+        }
+
+        else{
+            cout<<"Please Enter a Valid Level";
+        }
+
+       
+    }
+    void Griding(vector<int> k){
+        for(int i=0;i<9;i++)
+          {
+              for(int j=0;j<9;j++)
+              {
+                grid[i][j] = (k[9*i+j]);
+              }
+          }
+    }
     bool solveSudoku(){
        int row,col;
        if (!findEmptyPlace(row, col))
@@ -218,7 +230,7 @@ class Solver : public Checker{
 };
 
 
-class User{
+class User{     //class for user details
     public:
     string name;
     string displayMessage;
@@ -236,6 +248,10 @@ class User{
        this->id= d;
        cout<<"Welcome: "<<n<<endl<<"Id: "<<id;
     }
+
+    ~User(){
+        cout<<"Thank you! See you again!!"<<endl;
+    }
     
 };
 
@@ -252,6 +268,70 @@ class Game : public Checker{
     }
 
     public:
+    
+     void Griding(int a)
+    {
+        lvl= a;
+
+        if(lvl==1)
+        {
+            //cout<<"In level 1"<<endl;
+            int g[100]={
+            3,0,6,5,0,8,4,0,0,5,2,0,0,0,0,0,0,0,0,8,7,0,0,0,0,3,1,0,0,3,0,1,0,0,8,0,9,0,0,8,6,3,0,0,5,0,5,0,0,9,0,6,0,0,1,3,0,0,0,0,2,5,0,0,0,0,0,0,0,0,7,4,0,0,5,2,0,6,3,0,0};
+            //cout<<"In level 1"<<endl;
+            for(int i=0;i<9;i++)
+            {   //cout<<"In level 1 "<<i<<endl;
+                for(int j=0;j<9;j++)
+                {   //cout<<"In level 1 "<<i<<endl;
+                    //grid[i].push_back(g[9*i+j]);
+                    grid[i][j] = g[9*i+j];
+                    //cout<<"In level 1 "<<i<<endl;
+                }
+            }
+        }
+        else if(lvl==2)
+        {
+        int g[100]={
+        0,1,0,0,2,0,3,0,0,0,0,2,0,0,3,0,4,0,0,8,0,0,0,0,0,0,6,0,0,4,7,0,0,0,3,0,0,0,0,6,0,0,0,0,8,0,7,0,0,9,8,0,0,0,3,0,0,0,0,4,0,9,0,0,0,0,8,0,0,1,0,4,0,0,6,0,0,0,0,0,0};  
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<9;j++)
+            {
+                //grid[i].push_back(g[9*i+j]);
+                grid[i][j]=g[9*i+j];
+            }
+        }
+        }
+        else if(lvl==3)
+        {
+            int g[100]={
+        0,1,0,0,2,0,3,0,0,0,0,2,0,0,3,0,4,0,0,5,0,0,0,0,0,0,6,0,0,4,2,0,0,0,5,0,0,0,0,1,0,0,0,0,7,0,2,0,0,8,7,0,0,0,3,0,0,0,0,4,0,8,0,0,0,0,6,0,0,1,0,5,0,0,6,0,0,0,0,0,0};
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<9;j++)
+            {
+               // grid[i].push_back(g[9*i+j]);
+               grid[i][j]=g[9*i+j];
+            }
+        }
+        }
+
+        else{
+            cout<<"Please Enter a Valid Level";
+        }
+
+       
+    }
+    void Griding(vector<int> k)
+       {
+          for(int i=0;i<9;i++)
+          {
+              for(int j=0;j<9;j++)
+              {
+                grid[i][j] = (k[9*i+j]);
+              }
+          }
+        }
     void solve(){
         int a = count();
         int k[3];
@@ -294,26 +374,41 @@ int main(){
     //Grid* g = new Grid();
     //Solver h;
     vector<int> res;
-    cout<< "Welcome To Sudoko Mania"<<endl;
+    /*cout<< "Welcome To Sudoko Mania"<<endl;
     cout<<"Please Enter Your Name: ";
     getline(cin,n);
     cout<<"Please Enter your ID: ";
     cin>>i;
-    if(i<0){
-      User U(n);
-      cout<<"Cannot participate"; 
-    }
-    else{
-      User U(n,i);  
-    }
-   
-        
+
+    User* U = new User(n,i);*/
+
+    int choice;
+       loginmanager l;
+       graphicsdata g;
+       g.welcomeScreen();
+       do{
+ 
+       cout<<"1.LOGIN"<<endl;
+       cout<<"2.REGISTER"<<endl;
+       cout<<"3.FORGOT PASSWORD (or) USERNAME"<<endl;
+       cout<<"4.Exit"<<endl;
+       cout<<"\nEnter your choice :";
+       cin>>choice;
+       cout<<endl;
+       switch(choice)
+       {
+               case 1:  {
+                    bool status = l.login();
+
+                        if(status == true){
+
+                         while(1){
         cout<<endl<<"Please Enter any of the following Option : \n 1. Solver \n 2. Checker \n 3. Game \n 4. Exit \n"<<endl;
     int opt=0;
     cin>>opt;
 
     if(opt==1)
-    {   Grid* g = new Grid();
+    {   Solver* g = new Solver();
         cout<<"Do you want to use your own grid?(y/n)"<<endl;
         char stat;
         cin>>stat;
@@ -330,10 +425,10 @@ int main(){
                     for(int j=0;j<9;j++){
                         cout<<"hello enter your sudoku one by one. The grid will be updated as you enter the sudoku\n\nEnter 0 for the unfilled places:\n";
                         
-                        c->printGrid();//function to print the 9*9 matrix h.grid
+                        g->printGrid();//function to print the 9*9 matrix h.grid
                         cin>>val;
                         
-                        c->Gridding(val,i,j);
+                        g->Griding(val,i,j);
                         // function to updathe 9*9 array h.grid with the value val at position pos
                         //clrscr();
                         system("cls");
@@ -353,11 +448,9 @@ int main(){
             }
             cout<<"Your Entered Matrix:\n";
             g->printGrid();
-            Solver* h = new Solver();
-            h->solveSudoku();
+            g->solveSudoku();
             cout<<"Solved"<<endl;
             g->printGrid();
-            delete h;
             delete c;
             
         }
@@ -365,7 +458,7 @@ int main(){
             cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
             int a;
             cin>>a;
-            g->Gridgenerate(a);
+            g->Griding(a);
             cout<<"sample"<<endl;
             g->printGrid();
             Solver* h = new Solver();
@@ -379,7 +472,7 @@ int main(){
     }
     if(opt==2)
     {   
-        Grid* g = new Grid();
+       
         Checker* c= new Checker();
         cout<<"Please Enter your Sudoko: \n";
         int val;
@@ -390,7 +483,7 @@ int main(){
             c->printGrid();//function to print the 9*9 matrix h.grid
             cin>>val;
             
-            c->Gridding(val,i,j);
+            c->Griding(val,i,j);
             // function to updathe 9*9 array h.grid with the value val at position pos
             //clrscr();
             system("cls");
@@ -402,17 +495,17 @@ int main(){
           cout<<endl<<"Correct!!!";
         else
           cout<<endl<<"Incorrect! Please solve Again";  
-          delete g;
+         
           //delete C;
           delete c;
     }
 
     if(opt==3){
-        Grid* g = new Grid();
+        Game* g = new Game();
         cout<<"Displaying a Sample Sudoko, Pick a number between [1-3]"<<endl;
         int a;
         cin>>a;
-        g->Gridgenerate(a);
+        g->Griding(a);
         cout<<"Unsolved Sudoku"<<endl;
         g->printGrid();
         Game *game = new Game();
@@ -425,9 +518,31 @@ int main(){
     {
         cout<<"Thankyou!See You Again";
         return 0;
-    }  
+    }
+               }
+                        }
+                       break;
+               }
+               case 2:
+                       l.registr();
+                       break;
+               case 3:
+                       l.forgot();
+                       break;
+               case 4:
+ 
+                       cout<<"Thanks for using this program\n\n\n";
+                       break;
+               default:
+                       system("cls");
+                       cout<<"You've made a mistake , give it a try again\n"<<endl;
+       }
+       
+       }while(choice!=4);
+
+  
     //delete g;
-    
+    //delete U;
     return 0;
 }
  // 3 0 6 5 0 8 4 0 0 5 2 0 0 0 0 0 0 0 0 8 7 0 0 0 0 3 1 0 0 3 0 1 0 0 8 0 9 0 0 8 6 3 0 0 5 0 5 0 0 9 0 6 0 0 1 3 0 0 0 0 2 5 0 0 0 0 0 0 0 0 7 4 0 0 5 2 0 6 3 0 0
@@ -437,4 +552,3 @@ int main(){
 
 
  // 4 3 5 2 6 9 7 8 1 6 8 2 5 7 1 4 9 3 1 9 7 8 3 4 5 6 2 8 2 6 1 9 5 3 4 7 3 7 4 6 8 2 9 1 5 9 5 1 7 4 3 6 2 8 5 1 9 3 2 6 8 7 4 2 4 8 9 5 7 1 3 6 7 6 3 4 1 8 2 5 9
-// 1 2 3 6 7 8 9 4 5 5 8 4 2 3 9 7 6 1 9 6 7 1 4 5 3 2 8 3 7 2 4 6 1 5 8 9 6 9 1 5 8 3 2 7 4 4 5 8 7 9 2 6 1 3 8 3 6 9 2 4 1 5 7 2 1 9 8 5 7 4 3 6 7 4 5 3 1 6 8 9 2 
